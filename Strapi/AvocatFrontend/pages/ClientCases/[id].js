@@ -206,7 +206,7 @@ const ClientCases = () => {
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <button
-                              onClick={() => router.push(`/Invoices/${caseItem.id}`)}
+                              onClick={() => router.push(`/Invoice/${caseItem.id}`)}
                               className="text-blue-500 hover:underline"
                             >
                               <FaFileInvoice className="inline-block mr-1" />
