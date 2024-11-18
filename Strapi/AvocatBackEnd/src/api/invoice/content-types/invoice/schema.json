@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "invoices",
+  "info": {
+    "singularName": "invoice",
+    "pluralName": "invoices",
+    "displayName": "Invoice"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "AmountTF": {
+      "type": "decimal"
+    },
+    "AmountTTC": {
+      "type": "decimal"
+    },
+    "issued_date": {
+      "type": "date"
+    },
+    "end_date": {
+      "type": "date"
+    },
+    "case": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::case.case",
+      "inversedBy": "invoices"
+    }
+  }
+}
