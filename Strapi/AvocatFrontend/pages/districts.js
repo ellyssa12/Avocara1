@@ -23,10 +23,17 @@ const DistrictsPage = () => {
 
   const fetchDistricts = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/districts`);
+      const token = localStorage.getItem('token'); // Récupérer le token depuis localStorage
+      const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/districts`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Ajouter le token dans les en-têtes
+        },
+      });
+
       if (!response.ok) {
         throw new Error('Failed to fetch districts');
       }
+
       const data = await response.json();
       setDistricts(data.data);
     } catch (error) {
@@ -45,23 +52,28 @@ const DistrictsPage = () => {
         Name: districtName.trim(),
       },
     };
+
     if (!newDistrict.data.Name) {
       setError('District name is required');
       return;
     }
+
     try {
+      const token = localStorage.getItem('token'); // Récupérer le token
       const response = editingDistrictId
         ? await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/districts/${editingDistrictId}`, {
             method: 'PUT',
-                headers: {
-        Authorization: `Bearer ${token}`
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`, // Inclure le token
             },
             body: JSON.stringify(newDistrict),
           })
         : await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/districts`, {
             method: 'POST',
-                headers: {
-        Authorization: `Bearer ${token}`
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`, // Inclure le token
             },
             body: JSON.stringify(newDistrict),
           });
@@ -85,12 +97,18 @@ const DistrictsPage = () => {
 
   const handleDeleteDistrict = async (districtId) => {
     try {
+      const token = localStorage.getItem('token'); // Récupérer le token
       const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/districts/${districtId}`, {
         method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`, // Ajouter le token dans les en-têtes
+        },
       });
+
       if (!response.ok) {
         throw new Error('Failed to delete district');
       }
+
       await fetchDistricts();
     } catch (error) {
       setError(error.message);
